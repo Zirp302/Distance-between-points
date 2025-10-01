@@ -24,6 +24,7 @@ def on_mouse_press(x, y, button, modifiers):
             x=XY1[0] - 5, y=XY1[1] + 15,
             font_size=14, font_name='Arial',
             color=(255, 255, 255), batch=pak)
+        
     # Вторая точка
     elif button == mouse.RIGHT:
         global B
@@ -39,10 +40,7 @@ def on_mouse_press(x, y, button, modifiers):
 
     Y = XY1[0] - XY2[0]
     X = XY1[1] - XY2[1]
-    str_A = f'A [x:{XY1[0]}  y:{XY1[1]}]'
-    str_B = f'B [x:{XY2[0]}  y:{XY2[1]}]'
-    otv = str((X ** 2 + Y ** 2) ** 0.5)
-    print(otv, XY1, XY2)
+
     # Отрезок соеденяющий А и В
     global line
     line = sh.Line(
@@ -50,34 +48,34 @@ def on_mouse_press(x, y, button, modifiers):
         color=(255, 255, 255), thickness=10,
         batch=pak)
 
+    str_A = f'A [x:{XY1[0]}  y:{XY1[1]}]'
+    str_B = f'B [x:{XY2[0]}  y:{XY2[1]}]'
+    otv = str((X ** 2 + Y ** 2) ** 0.5)
+    
+    global tabl_text
+    tabl_text = {
+        otv: None,
+        str_A: None,
+        str_B: None}
+
+    y0 = 570
+    for text in tabl_text.keys():
+        tabl_text[text] = pyglet.text.Label(
+            text, x=25, y=y0,
+            font_size=16, font_name='Arial',
+            color=(255, 255, 255), batch=pak)
+        y0 -= 20
+
+
             # Перенеси ЭТО в for
     # Растоянние между А и В
-    global text_line
-    text_line = pyglet.text.Label(
-        otv,
-        x=25, y=570,
-        font_size=16, font_name='Arial',
-        color=(255, 255, 255), batch=pak)
 
-    # Координаты точки A
-    global text_A
-    text_A = pyglet.text.Label(
-        str_A,
-        x=25, y=550,
-        font_size=16, font_name='Arial',
-        color=(255, 255, 255), batch=pak)
+    
 
-    # Координаты точки В
-    global text_B
-    text_B = pyglet.text.Label(
-        str_B,
-        x=24, y=530,                    # х неодинковое так как В на 1px больше А при размере 16
-        font_size=16, font_name='Arial',
-        color=(255, 255, 255), batch=pak)
 
 @wind.event
 def on_draw():
     wind.clear()
     pak.draw()
 
-pyglet.app.run() 
+pyglet.app.run()
