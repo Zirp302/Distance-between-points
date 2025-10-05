@@ -4,11 +4,9 @@ from pyglet import shapes as sh
 
 
 wind = pyglet.window.Window(720, 600)
-A = sh.Circle(0, 0, 5)
-B = sh.Circle(0, 0, 5)
-XY1 = [0, 0]
-XY2 = [0, 0]
 pak = pyglet.graphics.Batch() 
+A_XY = [0, 0] # Координаты точки А
+B_XY = [0, 0] # Координаты точки В
 
 @wind.event
 def on_mouse_press(x, y, button, modifiers):
@@ -17,11 +15,10 @@ def on_mouse_press(x, y, button, modifiers):
         global A
         global point_A
         A = sh.Circle(x, y, 5, color=(255, 255, 255), batch=pak)
-        XY1[0] = x
-        XY1[1] = y
+        A_XY[0] = x
+        A_XY[1] = y
         point_A = pyglet.text.Label(
-            'A',
-            x=XY1[0] - 5, y=XY1[1] + 15,
+            'A', x=(x - 5), y=(y + 15),
             font_size=14, font_name='Arial',
             color=(255, 255, 255), batch=pak)
         
@@ -30,27 +27,27 @@ def on_mouse_press(x, y, button, modifiers):
         global B
         global point_B
         B = sh.Circle(x, y, 5, color=(255, 255, 255), batch=pak)
-        XY2[0] = x
-        XY2[1] = y
+        B_XY[0] = x
+        B_XY[1] = y
         point_B = pyglet.text.Label(
-            'B',
-            x=XY2[0] - 5, y=XY2[1] + 15,
+            'B', x=(x - 5), y=(y + 15),
             font_size=14, font_name='Arial',
             color=(255, 255, 255), batch=pak)
 
-    Y = XY1[0] - XY2[0]
-    X = XY1[1] - XY2[1]
+    line_Y = A_XY[0] - B_XY[0] # Растояние от A.x до B.x
+    line_X = A_XY[1] - B_XY[1] # Растояние от A.y до B.y
 
     # Отрезок соеденяющий А и В
     global line
     line = sh.Line(
-        XY1[0], XY1[1], XY2[0], XY2[1],
+        A_XY[0], A_XY[1], B_XY[0], B_XY[1],
         color=(255, 255, 255), thickness=10,
         batch=pak)
 
-    str_A = f'A [x:{XY1[0]}  y:{XY1[1]}]'
-    str_B = f'B [x:{XY2[0]}  y:{XY2[1]}]'
-    otv = str((X ** 2 + Y ** 2) ** 0.5)
+    # Текст с растоянием от A до В и координатами этих точек
+    str_A = f'A [x:{A_XY[0]}  y:{A_XY[1]}]'
+    str_B = f'B [x:{B_XY[0]}  y:{B_XY[1]}]'
+    otv = str((line_X ** 2 + line_Y ** 2) ** 0.5)
     
     global tabl_text
     tabl_text = {
@@ -66,11 +63,7 @@ def on_mouse_press(x, y, button, modifiers):
             color=(255, 255, 255), batch=pak)
         y0 -= 20
 
-
-            # Перенеси ЭТО в for
-    # Растоянние между А и В
-
-    
+    tabl_text[str_B].x -= 1  # В размером 16px на 1px больше чем A
 
 
 @wind.event
